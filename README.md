@@ -1,1 +1,1 @@
-# RE to NFA parser.
+# RE to NFA parser
