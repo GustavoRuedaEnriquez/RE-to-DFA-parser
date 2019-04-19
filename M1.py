@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Stack:
     def __init__(self):
         self.items = []
@@ -21,7 +23,11 @@ class Stack:
             return -1
     
 def isOperand(c):
-    return c >= 'A' and c <= 'Z'
+    operands =  [chr(i) for i in range(ord('0'), ord('9') + 1)]
+    operands += [chr(i) for i in range(ord('a'), ord('z') + 1)]
+    operands += [chr(i) for i in range(ord('A'), ord('Z') + 1)]
+    operands += ['á', 'é', 'í', 'ó', 'ú','ä','ö','ü','\n',' ','&']
+    return c in operands
 
 def isOperator(c):
     return c in "+*,&"
@@ -29,10 +35,10 @@ def isOperator(c):
 def getPrecedence(c):
     switcher = {
         '(':1,
-        '&':2,
         ',':2,
-        '+':3,
-        '*':3
+        '' :3,
+        '+':4,
+        '*':5
     }
     return switcher.get(c,-1)
 
@@ -67,7 +73,6 @@ def infixToPostfix(expression):
         cpop = s.pop()
         result += cpop
     return result
-
-print(infixToPostfix('AB*,C*D'))
+print(infixToPostfix('(A+B)*D'))
 
 
