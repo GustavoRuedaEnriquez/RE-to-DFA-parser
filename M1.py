@@ -30,21 +30,50 @@ def isOperand(c):
     return c in operands
 
 def isOperator(c):
-    return c in "+*,&"
+    return c in ",$+*"
 
 def getPrecedence(c):
     switcher = {
         '(':1,
         ',':2,
-        '' :3,
+        '$':3,
         '+':4,
         '*':5
     }
     return switcher.get(c,-1)
 
+def insertBetween(str, char, i):
+    return str[:i] + char + str[i:]
+
+def writeConcatSymbol(expression):
+    length = len(expression)
+    i = 0
+    end = False
+    while(i < length):
+        end = False
+        if(i != (len(expression) - 1) and (isOperand(expression[i]) or expression[i] in ('+', '*'))):
+            if(isOperand(expression[i+1]) or expression[i+1] == '('):
+                expression = insertBetween(expression, '$', i+1)
+            elif(expression[i+1] == ')' and (i+2) < len(expression)):
+                cont = i+2
+                while(expression[cont] != '(' and not isOperand(expression[cont])):
+                    if(expression[cont] in (',', '$', '+', '*')):
+                        end = True
+                        break
+                    cont+=1
+                    if(cont == len(expression)):
+                        end = True
+                        break
+                if(not end):
+                    expression = insertBetween(expression, '$', cont)
+        i += 1
+        length = len(expression)
+    return expression
+
 def infixToPostfix(expression):
     result = ""
     s = Stack()
+    expression = writeConcatSymbol(expression)
     for element in expression:
         if isOperand(element):
             result += element
@@ -73,6 +102,4 @@ def infixToPostfix(expression):
         cpop = s.pop()
         result += cpop
     return result
-print(infixToPostfix('(A+B)*D'))
-
-
+print(infixToPostfix('padre&+com'))
