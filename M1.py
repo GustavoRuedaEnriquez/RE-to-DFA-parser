@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class Stack:
     def __init__(self):
         self.items = []
@@ -102,4 +100,6 @@ def infixToPostfix(expression):
         cpop = s.pop()
         result += cpop
     return result
-print(infixToPostfix('padre&+com'))
+
+regex = input('Input: ')
+print('Output: ' + infixToPostfix(regex)) 
