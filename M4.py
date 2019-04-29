@@ -1,3 +1,24 @@
+class FDA:
+    def __init__(self,initialState,finalStates,transitions):
+        self.initialState = initialState
+        self.finalStates  = finalStates
+        self.transitions  = transitions
+        
+    def setInitialState(self,state):
+        self.initialState = state
+    def getInitialState(self):
+        return self.initialState
+
+    def setFinalStates(self,state):
+        self.finalStates = state
+    def getFinalStates(self):
+        return self.finalStates
+
+    def setTransitions(self,transitions):
+        self.transitions = transitions
+    def getTransitions(self):
+        return self.transitions
+
 def parseToDFA(nfaInitialState,nfaFinalStates,nfaTransitions):
     dfaNewStates   = {}   
     dfaTransitions = []
