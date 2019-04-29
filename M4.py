@@ -38,7 +38,7 @@ class FDA:
         for trans in self.transitions:
             transitions += str(trans)
             transitions += ",\n"
-        string = alphabet + "\n" + finalStates + "\n" + transitions
+        string = alphabet + "\n" + str(self.initialState) + "\n" + finalStates + "\n" + transitions
         return string
 
 def parseToDFA(nfaInitialState,nfaFinalStates,nfaTransitions,nfaAlphabet):
