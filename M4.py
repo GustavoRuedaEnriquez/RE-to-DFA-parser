@@ -1,8 +1,9 @@
 class FDA:
-    def __init__(self,initialState,finalStates,transitions):
+    def __init__(self,initialState,finalStates,transitions,alphabet):
         self.initialState = initialState
         self.finalStates  = finalStates
         self.transitions  = transitions
+        self.alphabet     = alphabet
         
     def setInitialState(self,state):
         self.initialState = state
@@ -19,7 +20,28 @@ class FDA:
     def getTransitions(self):
         return self.transitions
 
-def parseToDFA(nfaInitialState,nfaFinalStates,nfaTransitions):
+    def setAlphabet(self,alphabet):
+        self.alphabet = alphabet
+    def getAlphabet(self):
+        return self.alphabet
+
+    def __str__(self):
+        alphabet = ""
+        for alphas in self.alphabet:
+            alphabet += alphas
+            alphabet += ";"
+        finalStates = ""
+        for finals in self.finalStates:
+            finalStates += str(finals)
+            finalStates += ";"
+        transitions = ""
+        for trans in self.transitions:
+            transitions += str(trans)
+            transitions += ",\n"
+        string = alphabet + "\n" + finalStates + "\n" + transitions
+        return string
+
+def parseToDFA(nfaInitialState,nfaFinalStates,nfaTransitions,nfaAlphabet):
     dfaNewStates   = {}   
     dfaTransitions = []
     dfaFinalStates = set()
@@ -55,8 +77,9 @@ def parseToDFA(nfaInitialState,nfaFinalStates,nfaTransitions):
             dfaTransitions[currentStates][i] = list(dfaNewStates.keys())[list(dfaNewStates.values()).index(tempState)]
         currentStates += 1
         currentSize = len(dfaTransitions)
-    return nfaInitialState,dfaFinalStates,dfaTransitions
+    fda = FDA(nfaInitialState,dfaFinalStates,dfaTransitions,nfaAlphabet)
+    return fda
 
 nfa = [[[0,2],1],[[1,2],2],[[0,2],None]]
 finalStates = set([0])
-print(parseToDFA(0,finalStates,nfa))
+print(parseToDFA(0,finalStates,nfa,['a','b']))
