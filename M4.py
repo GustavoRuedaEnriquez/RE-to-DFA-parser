@@ -1,5 +1,4 @@
 def parseToDFA(nfaInitialState,nfaFinalStates,nfaTransitions):
-    
     dfaNewStates   = {}   
     dfaTransitions = []
     dfaFinalStates = set()
@@ -8,6 +7,9 @@ def parseToDFA(nfaInitialState,nfaFinalStates,nfaTransitions):
 
     dfaTransitions.append([None] * len(nfaTransitions[0]))
     dfaNewStates[newestState] = set([nfaInitialState])
+
+    if nfaInitialState in nfaFinalStates:
+        dfaFinalStates.add(newestState)
 
     currentStates = 0
     currentSize   = len(dfaTransitions)
