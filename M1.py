@@ -1,3 +1,24 @@
+#Authors:
+#   Carlo Alejandro Muñoz Amezquita
+#   Carolina Pérez-Vargas Pinson
+#   Gustavo Adolfo Rueda Enríquez
+#
+#Description:
+#   This module receives a regular expression in infix notation and
+#   and returns the same regular expression in postfix notation.
+#
+#Important Notes:
+#   We use reserved characters as the regular expression's operators:
+#       "," -> Or
+#       "+" -> Kleene plus
+#       "*" -> Kleene Star
+#   It is important to know that there is no need to write the concatenation
+#   symbol, the program inserts it automaticly with the "$" character.
+#
+#   Also, we use some special characters as some regular expression's operands:
+#       "&" -> Anything
+#       "ë" -> Epsilon
+
 class Stack:
     def __init__(self):
         self.items = []
@@ -24,7 +45,7 @@ def isOperand(c):
     operands =  [chr(i) for i in range(ord('0'), ord('9') + 1)]
     operands += [chr(i) for i in range(ord('a'), ord('z') + 1)]
     operands += [chr(i) for i in range(ord('A'), ord('Z') + 1)]
-    operands += ['á', 'é', 'í', 'ó', 'ú','ä','ö','ü','\n',' ','&']
+    operands += ['á', 'é', 'í', 'ó', 'ú','ä','ö','ü','\n',' ','&','ë']
     return c in operands
 
 def isOperator(c):
@@ -101,5 +122,5 @@ def infixToPostfix(expression):
         result += cpop
     return result
 
-regex = input('Input: ')
-print('Output: ' + infixToPostfix(regex)) 
+regex = input('Input Regular Expression: ')
+print('Output Regular Expression: ' + infixToPostfix(regex)) 
