@@ -1,13 +1,15 @@
-#Authors:
+# M1
+#
+# Authors:
 #   Carlo Alejandro Muñoz Amezquita
 #   Carolina Pérez-Vargas Pinson
 #   Gustavo Adolfo Rueda Enríquez
 #
-#Description:
+# Description:
 #   This module receives a regular expression in infix notation and
 #   and returns the same regular expression in postfix notation.
 #
-#Important Notes:
+# Important Notes:
 #   We use reserved characters as the regular expression's operators:
 #       "," -> Or
 #       "+" -> Kleene plus
