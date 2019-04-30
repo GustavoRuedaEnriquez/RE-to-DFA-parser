@@ -1,3 +1,31 @@
+# M4
+#
+# Authors:
+#   Carlo Alejandro Muñoz Amezquita
+#   Carolina Pérez-Vargas Pinson
+#   Gustavo Adolfo Rueda Enríquez
+#
+# Description:
+#   This module receives a NFA and returns its equivalent DFA.
+#
+# Important Notes:
+#   An DFA object has 4 attributes:
+#       - initialState
+#       - finalStates
+#       - transitions
+#       - alphabet
+#
+#   If you print a DFA object, the format will be like this:
+#       alphabet symbol 1;alphabet symbol 2;...;alphabet symbol n;
+#       initial state
+#       final state 1;final state 2;...;final state n;
+#       transition deltas 1,
+#       transition deltas 2,
+#               .
+#               .
+#               .
+#       transition deltas n,
+
 class FDA:
     def __init__(self,initialState,finalStates,transitions,alphabet):
         self.initialState = initialState
