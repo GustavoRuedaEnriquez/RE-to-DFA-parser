@@ -11,15 +11,15 @@
 #
 # Important Notes:
 #   We use reserved characters as the regular expression's operators:
-#       "," -> Or
-#       "+" -> Kleene plus
-#       "*" -> Kleene Star
+#       ',' -> Or
+#       '+' -> Kleene plus
+#       '*' -> Kleene Star
 #   It is important to know that there is no need to write the concatenation
 #   symbol, the program inserts it automaticly with the "$" character.
 #
 #   Also, we use some special characters as some regular expression's operands:
-#       "&" -> Anything
-#       "ë" -> Epsilon
+#       '&' -> Anything
+#       'ë' -> Epsilon
 
 class Stack:
     def __init__(self):
