@@ -2,6 +2,9 @@ import sys
 
 EPSILON = 'ë'
 
+"""
+Simple FIFO structure
+"""
 class Queue:
     def __init__(self):
         self.queue = []
@@ -17,7 +20,9 @@ class Queue:
     def isNotEmpty(self):
         return len(self.queue) > 0
 
-
+"""
+Class created to represent a transition of the NFA-e
+"""
 class Transition:
     def __init__(self, nodeTo, transitions):
         self.nodeTo = nodeTo
@@ -26,7 +31,10 @@ class Transition:
     def __str__(self):
         return '(' + str(self.nodeTo) + ', ' + str(self.transitions) + ')'
 
-def reg_to_afne(expression):
+"""
+This function recives a regular expression in postfix notation and returns a A
+"""
+def reg_to_nfae(expression):
     afne = [[Transition(1, [expression])], []]
     queue = Queue()
     queue.add((0, 0, 0))
@@ -37,7 +45,7 @@ def reg_to_afne(expression):
         currentTransition = afne[currentIndex[0]][currentIndex[1]]
         currentExpression = currentTransition.transitions[currentIndex[2]]
 
-        if len(currentExpression) == 1:
+        if currentExpression in alphabet:
             continue
 
         elif currentExpression[-1] == '*':
@@ -85,11 +93,33 @@ def reg_to_afne(expression):
             queue.add((currentIndex[0], currentIndex[1], newNode2))
 
         elif currentExpression[-1] == '+':
-            #TODO: Case when the operator is kleen star
-            pass
+            #Case when the operator is kleen star
+            currentTransition.transitions[currentIndex[2]] = currentExpression[:-1]
+
+            #Find out if a transition from "NodeTo" and currentNode exist
+            transitionExists = False
+
+            #If the transition exist, nextTransition will point to that transition
+            nextTransition = None
+            for transition in afne[currentTransition.nodeTo]:
+                if transition.nodeTo == currentIndex[0]:
+                    transitionExists = True
+                    break
+
+            if transitionExists:
+                nextTransition.transition.append(EPSILON)
+
+            else:
+                newTransition = (currentIndex[0], [EPSILON])
+                afne[currentTransition.nodeTo].append(newTransition)
+
+            queue.add(currentIndex)
 
     return afne
 
+"""
+This function gets the operands of a binary operation
+"""
 def get_operands(expression, alphabet):
     assert len(expression) > 1
     #3 cases:
@@ -104,8 +134,12 @@ def get_operands(expression, alphabet):
     #Third case: Two complex expression
     else:
         for i in range(len(expression)-1, 0, -1):
-            if expression[i] in alphabet and expression[i-1] in alphabet:
-                return expression[:i-1], expression[i-1:]
+            if expression[i] in alphabet:
+                if expression[i-1] in alphabet:
+                    return expression[:i-1], expression[i-1:]
+                
+                else:
+                    return expression[:i], expression[i:]
 
 def get_alphabet(expression):
     operands = [',', '+', '*', EPSILON, '&', '$']
@@ -115,11 +149,12 @@ def get_alphabet(expression):
         if not w in operands:
             alphabet.append(w)
 
+    alphabet.append(EPSILON)
     return alphabet
 
 if __name__ == '__main__':
+    d = reg_to_nfae('ab,c*$ab,$+')
     
-    d = reg_to_afne('ab$c$d$')
     for array in d:
         for node in array:
             sys.stdout.write(str(node) + ' ')
