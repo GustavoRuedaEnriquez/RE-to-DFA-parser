@@ -106,7 +106,8 @@ class NFA:
         for state in range(noStates):
             for symbol in range(noSymbols):
                 newMatrix[state][symbol] = self.calcEpsilonClosure(self.calcD(self.calcEpsilonClosure([(state)]), symbol)) #state parameter as a list containing only that state        
-        return newMatrix
+        self.transitions = newMatrix
+        self.alphabet = self.alphabet[:-1]
 
 t = [
     [[1], [1], []],
@@ -120,9 +121,6 @@ nfae = NFA( initialState = 0,
             alphabet=['a','b','ë'] )
 print("original \n", nfae)
 
-new = NFA( initialState = 0,
-            finalStates = [3], 
-            transitions=  nfae.convert(), 
-            alphabet=['a','b'] )
+nfae.convert()
 
-print("\n new \n", new)
+print("\n new \n", nfae)
