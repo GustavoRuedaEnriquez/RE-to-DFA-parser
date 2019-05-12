@@ -1,3 +1,5 @@
+import math
+
 class Automata:
     def __init__(self, alphabet, delta, initial_state, final_states):
         self.delta = delta
@@ -29,21 +31,101 @@ class Automata:
         current_state = self.delta[self.__run_extended_delta(s, w[:-1])][w[-1]]
         self.path.append(current_state)
         return current_state
+   
+    def __str__(self):
+        alphabet = ""
+        for alphas in self.mapped_alphabet:
+            alphabet += alphas
+            alphabet += ";"
+        finalStates = ""
+        for finals in self.final_states:
+            finalStates += str(finals)
+            finalStates += ";"
+        transitions = ""
+        for trans in self.delta:
+            transitions += str(trans)
+            transitions += ",\n"
+        string = alphabet + "\n" + str(self.initial_state) + "\n" + finalStates + "\n" + transitions
+        return string
 
     def reduce(self):
-        pass
+        # 1 ) creates Q x Q table
+        noStates = len(self.delta)
+        current = [(s2, s1) for s1 in range(noStates) for s2 in range(noStates)]
+        #print("initial Q x Q list" ,current)
+
+
+        # 2 ) deletes tuples in which peF and q noteF or viceversa from the table
+        t = 0
+        while(t < len(current)):        #for t in range(len(current)):   #t is the tuple
+            s1 = current[t][0]
+            s2 = current[t][1]
+            if s1 in self.final_states and s2 not in self.final_states or s2 in self.final_states and s1 not in self.final_states:
+                del current[t]
+            else: t+=1    
+        #print("list after step 2 ", current)
+        
+
+        # 3 ) deletes tuples from the nestStep table if theyre not in current table
+        change = True
+        while change:
+            t = 0
+            change = False
+            while(t < len(current)):        #for t in range(len(current)):   #t is the tuple
+                deleted = False
+                for symbol in range(len(self.mapped_alphabet)):
+                    p = self.delta  [current[t][0]]  [symbol]
+                    q = self.delta  [current[t][1]]  [symbol]
+                    if not (p,q) in current:
+                        del current[t]
+                        deleted = True
+                        change = True
+                        break
+                if not deleted: t+=1
+        
+        #Delete (n, n)
+        t = 0
+        while(t < len(current)):
+            if [current[t][0]] == [current[t][1]]: 
+                del current[t]
+            else: t+=1 
+        
+        #Delete (m, n) since we have its equivalent (n,m) 
+        del current[:len(current)//2]   #?????????????????????????????????????
+        print("Equivalent states ", current)
+       
+        #rewrite matrix to collapse equivalent states
+        #???????????????????????????????????????????????????????
+        noStates =  len(self.delta) - len(current)
+        noSymbols = len(self.mapped_alphabet)
+        newMatrix = []#first in 1 dimension
+        for state in range(noStates):
+            newMatrix.append([])
+        
+        for state in range(noStates):
+            for symbol in range(noSymbols):
+                if state:
+                newMatrix[state][symbol] = newMatrix[state][symbol]      
+        
+        self.delta = newMatrix 
+
 
 #main
-if __name__ == '__main__':
-    outputS = ""
-    output = open('output.txt', 'w')
-    f = open('input.txt', 'r')
-    dfa = Automata(('a','b'), ((3,1),(2,1),(2,1),(3,4),(3,4)), 0, (1,3))
-    for line in f:
-       if dfa.extended_delta(line[:-1]):
-            outputS+=line
-    output.write(outputS)
-    output.close()
-    f.close()
+dfa = Automata(('a','b'), ((1,3),(2,1),(1,2),(4,3),(3,4)), 0, (1,3))
 
+print("original \n", dfa)
 
+dfa.reduce()
+
+print("\n new \n", dfa)
+
+"""
+        while True:
+            nextStep = current.copy()
+            for tupla in range(len(current)):
+                for symbol in range(len(self.mapped_alphabet)):
+                    a = delta[current[tupla][0]][symbol]
+                    b = delta[tupla[1]][symbol]
+                    if not (a,b) in current:
+                        del nextStep[tupla] 
+"""
