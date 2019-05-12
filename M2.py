@@ -110,12 +110,12 @@ def reg_to_nfae(expression):
                 nextTransition.transition.append(EPSILON)
 
             else:
-                newTransition = (currentIndex[0], [EPSILON])
+                newTransition = Transition(currentIndex[0], [EPSILON])
                 afne[currentTransition.nodeTo].append(newTransition)
 
             queue.add(currentIndex)
 
-    return afne
+    return transform_to_matrix(alphabet, afne)
 
 """
 This function gets the operands of a binary operation
@@ -146,16 +146,26 @@ def get_alphabet(expression):
     alphabet = []
 
     for w in expression:
-        if not w in operands:
+        if not w in operands and not w in alphabet:
             alphabet.append(w)
 
     alphabet.append(EPSILON)
     return alphabet
 
-if __name__ == '__main__':
-    d = reg_to_nfae('ab,c*$ab,$+')
+
+def transform_to_matrix(alphabet, afne):
+    alphabet_mapped = dict()
     
-    for array in d:
-        for node in array:
-            sys.stdout.write(str(node) + ' ')
-        print()
+    for w, index in zip(alphabet, range(len(alphabet))):
+        alphabet_mapped[w] = index
+
+    matrix = []
+    for node in afne:
+        current_node = [[] for i in range(4)]
+        for transition in node:
+            for letter in transition.transitions:
+                current_node[alphabet_mapped[letter]].append(transition.nodeTo)
+                
+        matrix.append(current_node)
+
+    return matrix
