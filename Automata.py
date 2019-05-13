@@ -92,32 +92,56 @@ class Automata:
         
         #Delete (m, n) since we have its equivalent (n,m) 
         del current[:len(current)//2]   #?????????????????????????????????????
-        print("Equivalent states ", current)
-       
-        #rewrite matrix to collapse equivalent states
-        #???????????????????????????????????????????????????????
-        noStates =  len(self.delta) - len(current)
-        noSymbols = len(self.mapped_alphabet)
-        newMatrix = []#first in 1 dimension
-        for state in range(noStates):
-            newMatrix.append([])
-        
-        for state in range(noStates):
-            for symbol in range(noSymbols):
-                if state:
-                newMatrix[state][symbol] = newMatrix[state][symbol]      
-        
-        self.delta = newMatrix 
+        #print("Equivalent states ", current)
+
+        collsapedStates = []
+        for i in current:
+            if not i in collsapedStates:
+                collsapedStates.append(i[0])
+                collsapedStates.append(i[1])
+
+        for i in range(len(self.delta)):
+            if not i in collsapedStates:
+                current.append((i, ))
+
+        #Rename
+        rename = [None for i in range(len(self.delta))]
+        newInitialState = 0
+        newFinalStates = []
+        newDelta =[]
+
+        for i in range(len(current)):
+            for state in current[i]:
+                rename[state] = i
+
+                if state == self.initial_state:
+                    newInitialState = i
+                
+                if state in self.final_states:
+                    newFinalStates.append(i)
+
+        print(rename)
+        flags = [False] * len(current)
+        for oldTransition in range(len(self.delta)):
+            if flags[rename[oldTransition]]:
+                continue
+
+            print(self.delta[oldTransition])
+            newTransition = [rename[self.delta[oldTransition][symbol]] for symbol in range(len(self.delta[oldTransition]))]
+            newDelta.append(newTransition)
+            flags[rename[oldTransition]] = True
+
+        print(newDelta)
 
 
 #main
 dfa = Automata(('a','b'), ((1,3),(2,1),(1,2),(4,3),(3,4)), 0, (1,3))
 
-print("original \n", dfa)
+#print("original \n", dfa)
 
 dfa.reduce()
 
-print("\n new \n", dfa)
+#print("\n new \n", dfa)
 
 """
         while True:

@@ -1,3 +1,5 @@
+from Automata import Automata
+
 if __name__ == '__main__':
     outputS = ""
     output = open('output.txt', 'w')
