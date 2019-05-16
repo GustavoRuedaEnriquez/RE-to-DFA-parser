@@ -109,18 +109,36 @@ class NFA:
         self.transitions = newMatrix
         self.alphabet = self.alphabet[:-1]
 
-t = [
+def M3(nFA: NFA):
+    nFA.convert()
+
+#main
+print("Example 1:")
+t1 = [
     [[1], [1], []],
     [[3], [], [2]],
     [[], [2], [3]],
     [[],[],[]]
     ]
-nfae = NFA( initialState = 0,
+nfa1 = NFA( initialState = 0,
             finalStates = [3], 
-            transitions = t, 
-            alphabet=['a','b','ë'] )
-print("original \n", nfae)
+            transitions = t1, 
+            alphabet = ['a','b','ë'] )
+print("Nfa with epsilon transitions \n"+str(nfa1))
+M3(nfa1)
+print("Nfa with epsilon transitions \n"+str(nfa1))
 
-nfae.convert()
-
-print("\n new \n", nfae)
+print("Example 2:")
+t2 = [
+    [[0], [], [1]],
+    [[], [], [2]],
+    [[3], [2], []],
+    [[],[],[]]
+    ]
+nfa2 = NFA( initialState = 0,
+            finalStates = [3], 
+            transitions = t2, 
+            alphabet = ['a','b','ë'] )
+print("Nfa with epsilon transitions \n"+str(nfa2))
+M3(nfa2)
+print("Nfa with epsilon transitions \n"+str(nfa2))

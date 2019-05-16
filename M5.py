@@ -1,3 +1,31 @@
+# M3
+#
+# Authors:
+#   Carlo Alejandro Muñoz Amezquita
+#   Carolina Pérez-Vargas Pinson
+#   Gustavo Adolfo Rueda Enríquez
+#
+# Description:
+#   This module receives a DFA and returns its equivalent minimized DFA.
+#
+# Important Notes:
+#   An NFA object has 4 attributes:
+#       - initial_state
+#       - final_states
+#       - delta (transitions matrix)
+#       - mapped_alphabet
+#	```	- alphabet
+#
+#   If you print a DFA object, the format will be like this:
+#       alphabet symbol 1;alphabet symbol 2;...;alphabet symbol n;
+#       initial state
+#       final state 1;final state 2;...;final state n;
+#       transition deltas 1,
+#       transition deltas 2,
+#               .
+#               .
+#               .
+#       transition deltas n,
 import math
 
 class Automata:
@@ -112,8 +140,9 @@ class Automata:
                 for t3 in current[t1]:
                     for t4 in current[t2]:
                         if t3 == t4:
-                            current[t1] += (current[t2] - [t4])
-                            del current[t2]
+                        	dif = [item for item in current[t2] if item not in [t4]]
+                        	current[t1].append(dif)
+                        	del current[t2]
                 t2 += 1
             t1 += 1
 
@@ -131,7 +160,7 @@ class Automata:
         rename = [None for i in range(len(self.delta))]
         newInitialState = 0
         newFinalStates = []
-        newDelta =[]
+        newDelta =[[] for j in range(len(current))]
 
         for i in range(len(current)):
             for state in current[i]:
@@ -140,8 +169,12 @@ class Automata:
                 if state == self.initial_state:
                     newInitialState = i
                 
-                if state in self.final_states:
+                if state in self.final_states and not i in newFinalStates:
                     newFinalStates.append(i)
+
+        print(rename)
+        self.initial_state = newInitialState
+        self.final_states = newFinalStates
 
         flags = [False] * len(current)
         for oldTransition in range(len(self.delta)):
@@ -149,10 +182,29 @@ class Automata:
                 continue
 
             newTransition = [rename[self.delta[oldTransition][symbol]] for symbol in range(len(self.delta[oldTransition]))]
-            newDelta.append(newTransition)
+            newDelta[rename[oldTransition]] += newTransition
             flags[rename[oldTransition]] = True
 
         self.delta = newDelta
 
 def M5(automata: Automata):
 	automata.reduce()
+
+#main
+print("Example 1:")
+dfa1 = Automata(('a','b'), ((1,3),(2,1),(1,2),(4,3),(3,4)), 0, (1,3))
+print("DFA \n"+str(dfa1))
+M5(dfa1)
+print("Minimized DFA \n"+str(dfa1))
+
+print("Example 2:")
+dfa2 = Automata(('a','b'), ((1,3),(2,4),(5,5),(4,2),(5,5),(5,5)), 0, (1,3,5))
+print("DFA \n"+str(dfa2))
+M5(dfa2)
+print("Minimized DFA \n"+str(dfa2))
+
+print("Example 3:")
+dfa3 = Automata(('0','1'), ((1,1),(2,2),(3,3),(1,1)), 0, (1,2,3))
+print("DFA \n"+str(dfa3))
+M5(dfa3)
+print("Minimized DFA \n"+str(dfa3))
