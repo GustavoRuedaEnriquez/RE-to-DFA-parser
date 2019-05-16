@@ -154,9 +154,5 @@ class Automata:
 
         self.delta = newDelta
 
-#main
-dfa = Automata(('a','b'), ((1,3),(2,1),(1,2),(4,3),(3,4)), 0, (1,3))
-print("original \n", dfa)
-
-dfa.reduce()
-print("\n new \n", dfa)
+def M5(automata: Automata):
+	automata.reduce()
