@@ -18,9 +18,14 @@
 #   symbol, the program inserts it automaticly with the "$" character.
 #
 #   Also, we use some special characters as some regular expression's operands:
-#       '&' -> Anything
+#       '&' -> Wildcard
 #       'ë' -> Epsilon
 
+import sys
+
+"""
+Simple FILO structure
+"""
 class Stack:
     def __init__(self):
         self.items = []
@@ -42,7 +47,10 @@ class Stack:
             return self.items[len(self.items)-1]
         else:
             return -1
-    
+
+"""
+This function recives a character and determines if it is an operand.
+"""
 def isOperand(c):
     operands =  [chr(i) for i in range(ord('0'), ord('9') + 1)]
     operands += [chr(i) for i in range(ord('a'), ord('z') + 1)]
@@ -50,9 +58,15 @@ def isOperand(c):
     operands += ['á', 'é', 'í', 'ó', 'ú','ä','ö','ü','\n',' ','&','ë']
     return c in operands
 
+"""
+This function recives a character and determines if it is an operator.
+"""
 def isOperator(c):
     return c in ",$+*"
 
+"""
+This function recives a operator character and determines its precedence.
+"""
 def getPrecedence(c):
     switcher = {
         '(':1,
@@ -63,9 +77,15 @@ def getPrecedence(c):
     }
     return switcher.get(c,-1)
 
+"""
+This function inserts a character between a given string index.
+"""
 def insertBetween(str, char, i):
     return str[:i] + char + str[i:]
 
+"""
+This function writes the concatenation symbol in a regular expression.
+"""
 def writeConcatSymbol(expression):
     length = len(expression)
     i = 0
@@ -91,6 +111,9 @@ def writeConcatSymbol(expression):
         length = len(expression)
     return expression
 
+"""
+This function receives a string representing a regular expression and transforms it to the postfix notations.
+"""
 def infixToPostfix(expression):
     result = ""
     s = Stack()
@@ -124,5 +147,12 @@ def infixToPostfix(expression):
         result += cpop
     return result
 
-regex = input('Input Regular Expression: ')
+if(len(sys.argv) is not 1):
+  with open(str(sys.argv[1]), "r") as fd:
+    for line in fd:
+        line = line.strip()
+        regex = line
+    print('Input Regular Expression: ' + regex)
+else:
+    regex = input('Input Regular Expression: ')
 print('Output Regular Expression: ' + infixToPostfix(regex)) 
