@@ -5,6 +5,7 @@ class Automata:
         self.delta = delta
         self.initial_state = initial_state
         self.final_states = final_states
+        self.alphabet = alphabet
 
         self.mapped_alphabet = dict()
         for i in range(len(alphabet)):
