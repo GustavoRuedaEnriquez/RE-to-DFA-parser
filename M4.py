@@ -113,42 +113,43 @@ def parseToDFA(nfa):
 def M4(nfa: DFA):
     return parseToDFA(nfa)
 
-#main
-print("Example 1:")
-t1 =[[[0], [0,1]],
-    [[2], [2]],
-    [[3], [3]],
-    [[],[]]]
-nfa1 = NFA( initialState = 0,
-            finalStates = {3}, 
-            transitions = t1, 
-            alphabet = ['0','1'] )
-print("NFA\n"+str(nfa1))
-dfa1 = M4(nfa1)
-print("Equivalent DFA\n"+str(dfa1))
+if __name__ == '__main__':
 
-print("Example 2:")
-t2 =[[[0], [0,1], []],
-    [[2], [2], []],
-    [[], [], [2]]]
-nfa2 = NFA( initialState = 0,
-            finalStates = {2}, 
-            transitions = t2, 
-            alphabet = ['0','1','2'] )
-print("NFA\n"+str(nfa2))
-dfa2 = M4(nfa2)
-print("Equivalent DFA\n"+str(dfa2))
+    print("Example 1:")
+    t1 =[[[0], [0,1]],
+        [[2], [2]],
+        [[3], [3]],
+        [[],[]]]
+    nfa1 = NFA( initialState = 0,
+                finalStates = {3}, 
+                transitions = t1, 
+                alphabet = ['0','1'] )
+    print("NFA\n"+str(nfa1))
+    dfa1 = M4(nfa1)
+    print("Equivalent DFA\n"+str(dfa1))
 
-print("Example 3:")
-t3 =[[[0,1], [0], [0]],
-    [[], [], [2]],
-    [[], [3], []],
-    [[3], [3], [3]]]
-nfa3 = NFA( initialState = 0,
-            finalStates = {3}, 
-            transitions = t3, 
-            alphabet = ['a','b','c'] )
-print("NFA\n"+str(nfa3))
-dfa3 = M4(nfa3)
-print("Equivalent DFA\n"+str(dfa3))
+    print("Example 2:")
+    t2 =[[[0], [0,1], []],
+        [[2], [2], []],
+        [[], [], [2]]]
+    nfa2 = NFA( initialState = 0,
+                finalStates = {2}, 
+                transitions = t2, 
+                alphabet = ['0','1','2'] )
+    print("NFA\n"+str(nfa2))
+    dfa2 = M4(nfa2)
+    print("Equivalent DFA\n"+str(dfa2))
+
+    print("Example 3:")
+    t3 =[[[0,1], [0], [0]],
+        [[], [], [2]],
+        [[], [3], []],
+        [[3], [3], [3]]]
+    nfa3 = NFA( initialState = 0,
+                finalStates = {3}, 
+                transitions = t3, 
+                alphabet = ['a','b','c'] )
+    print("NFA\n"+str(nfa3))
+    dfa3 = M4(nfa3)
+    print("Equivalent DFA\n"+str(dfa3))
 

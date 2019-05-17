@@ -20,7 +20,7 @@
 #               .
 #               .
 #       transition deltas n,
-from Automata import Automata
+from M5 import Automata
 
 def check(automata,inputFile):
     outputS = ""
@@ -36,20 +36,4 @@ def check(automata,inputFile):
 def M6(automata, inputFile: Automata):
     check(automata,inputFile)
 
-
-#main
-dfa = Automata(  ('a','b'), ((1,0),(0,1),(0,0)), 2, (0)  )#no funciona y este deberia ser el ejemplo 1
-
-print("Example 1:")
-dfa1 = Automata( ('a','b'), ((3,1),(2,1),(2,1),(3,4),(3,4)), 0, (1,3) )#funciona
-M6(dfa1, 'input.txt')
-print("See words that passed in output.txt")
-
-print("\nExample 2:")
-dfa2 = Automata(('a','b'), ((1,1),(3,3),(0,0),(3,3)), 2, (0,3))#funciona
-print("DFA:\n"+str(dfa2))
-M6(dfa2, 'input.txt')
-print("See words that passed in output.txt")
-
-#falta ejemplo 3
 

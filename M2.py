@@ -58,6 +58,13 @@ def reg_to_nfae(expression):
         currentIndex = queue.poll()
         currentTransition = afne[currentIndex[0]][currentIndex[1]]
         currentExpression = currentTransition.transitions[currentIndex[2]]
+        print("Current index:", currentIndex)
+        print("AFN:")
+        for i in afne:
+            for j in i:
+                sys.stdout.write(str(j) + ' ')
+
+        print()
 
         if currentExpression in alphabet:
             continue
@@ -97,6 +104,8 @@ def reg_to_nfae(expression):
             #Case when is "or"
             operand1, operand2 = get_operands(currentExpression[:-1], alphabet)
             
+            print('1', operand1, '2', operand2)
+
             del currentTransition.transitions[currentIndex[2]]
             newNode1 = len(currentTransition.transitions)
             currentTransition.transitions.append(operand1)
@@ -130,8 +139,8 @@ def reg_to_nfae(expression):
             queue.add(currentIndex)
 
     matrix = transform_to_matrix(alphabet, afne)
-    nfa = NFA( initialState = 0,#????????????????
-            finalStates = {1}, #?????????????
+    nfa = NFA( initialState = 0,
+            finalStates = {1},
             transitions = matrix, 
             alphabet = alphabet )
     return nfa
@@ -159,7 +168,7 @@ def get_operands(expression, alphabet):
                     return expression[:i], expression[i:]
 
 def get_alphabet(expression):
-    operands = [',', '+', '*', EPSILON, '&', '$']
+    operands = [',', '+', '*', EPSILON, '$']
     alphabet = []
 
     for w in expression:
@@ -191,24 +200,25 @@ def M2(regex: NFA):
     return reg_to_nfae(regex)
 
 
-#main
-print("Example 1:")
-regex1 = "AB*,C$D,"
-print("Regular expression in postfix notation \n"+regex1)
-output1 = M2(regex1)
-print("Nfa with epsilon transitions \n"+str(output1))
+if __name__ == '__main__':
 
-print("\nExample 2:")
-regex2 = "abb$+$c$"
-print("Regular expression in postfix notation \n"+regex2)
-output2 = M2(regex2)
-print("Nfa with epsilon transitions \n"+str(output2))
+    print("Example 1:")
+    regex1 = "AB*,C$D,"
+    print("Regular expression in postfix notation \n"+regex1)
+    output1 = M2(regex1)
+    print("Nfa with epsilon transitions \n"+str(output1))
 
-print("\nExample 3:")
-regex3 = "1a,*1b,$"
-print("Regular expression in postfix notation \n"+regex3)
-output3 = M2(regex3)
-print("Nfa with epsilon transitions \n"+str(output3))
+    print("\nExample 2:")
+    regex2 = "abb$+$c$"
+    print("Regular expression in postfix notation \n"+regex2)
+    output2 = M2(regex2)
+    print("Nfa with epsilon transitions \n"+str(output2))
+
+    print("\nExample 3:")
+    regex3 = "1a,*1b,$"
+    print("Regular expression in postfix notation \n"+regex3)
+    output3 = M2(regex3)
+    print("Nfa with epsilon transitions \n"+str(output3))
 
 
 

@@ -33,17 +33,16 @@ class Automata:
         self.delta = delta
         self.initial_state = initial_state
         self.final_states = final_states
-
+        self.alphabet = alphabet
+        
         self.mapped_alphabet = dict()
         for i in range(len(alphabet)):
             self.mapped_alphabet[alphabet[i]] = i
 
     def extended_delta(self, w):
-        self.path = [self.initial_state]
         new_w = []
         for i in w:
             new_w.append(self.mapped_alphabet[i])
-
         s = self.__run_extended_delta(self.initial_state, new_w)
 
         return s in self.final_states
@@ -53,11 +52,9 @@ class Automata:
     def __run_extended_delta(self, s, w):
         if len(w) == 1:
             current_state = self.delta[s][w[0]]
-            self.path.append(current_state)
             return current_state
 
         current_state = self.delta[self.__run_extended_delta(s, w[:-1])][w[-1]]
-        self.path.append(current_state)
         return current_state
    
     def __str__(self):
@@ -95,7 +92,7 @@ class Automata:
         #print("list after step 2 ", current)
         
 
-        # 3 ) deletes tuples from the nestStep table if theyre not in current table
+        # 3 ) deletes tuples if theyre not in current table
         change = True
         while change:
             t = 0
@@ -103,8 +100,10 @@ class Automata:
             while(t < len(current)):        #for t in range(len(current)):   #t is the tuple
                 deleted = False
                 for symbol in range(len(self.mapped_alphabet)):
-                    p = self.delta  [current[t][0]]  [symbol]
-                    q = self.delta  [current[t][1]]  [symbol]
+                    a = current[t][0]
+                    b = current[t][1]
+                    p = self.delta  [a]  [symbol]
+                    q = self.delta  [b]  [symbol]
                     if not [p,q] in current:
                         del current[t]
                         deleted = True
@@ -132,20 +131,6 @@ class Automata:
         current = newCurrent       
         del newCurrent
 
-        #Delete (collapse states with transitivities)
-        t1 = 0
-        while(t1 < len(current) - 1):
-            t2 = t1 + 1
-            while(t2 < len(current)):
-                for t3 in current[t1]:
-                    for t4 in current[t2]:
-                        if t3 == t4:
-                        	dif = [item for item in current[t2] if item not in [t4]]
-                        	current[t1].append(dif)
-                        	del current[t2]
-                t2 += 1
-            t1 += 1
-
         collsapedStates = []
         for i in current:
             if not i in collsapedStates:
@@ -157,26 +142,33 @@ class Automata:
                 current.append((i, ))
 
         #Rename
-        rename = [None for i in range(len(self.delta))]
+        rename = [-1 for i in range(len(self.delta))]
         newInitialState = 0
         newFinalStates = []
-        newDelta =[[] for j in range(len(current))]
 
+        count=0
         for i in range(len(current)):
-            for state in current[i]:
-                rename[state] = i
+            exists = False
+            for state in range(len(current[i])):
+                if rename[current[i][state]] != -1:
+                    exists = True
+                elif exists:
+                    rename[current[i][state]] = rename[current[i][state - 1]]     #(collapse states with transitivities)
+                else:
+                    rename[current[i][state]] = count
 
-                if state == self.initial_state:
-                    newInitialState = i
+                if current[i][state] == self.initial_state:
+                    newInitialState = count
                 
-                if state in self.final_states and not i in newFinalStates:
-                    newFinalStates.append(i)
+                if current[i][state] in self.final_states and not rename[current[i][state]] in newFinalStates:
+                    newFinalStates.append(rename[current[i][state]])
+            if not exists: count+=1
 
-        print(rename)
         self.initial_state = newInitialState
         self.final_states = newFinalStates
 
-        flags = [False] * len(current)
+        newDelta =[[] for j in range(len(set(rename)))] 
+        flags = [False] * len(set(rename))
         for oldTransition in range(len(self.delta)):
             if flags[rename[oldTransition]]:
                 continue
@@ -190,21 +182,27 @@ class Automata:
 def M5(automata: Automata):
 	automata.reduce()
 
-#main
-print("Example 1:")
-dfa1 = Automata(('a','b'), ((1,3),(2,1),(1,2),(4,3),(3,4)), 0, (1,3))
-print("DFA \n"+str(dfa1))
-M5(dfa1)
-print("Minimized DFA \n"+str(dfa1))
+if __name__ == '__main__':
+    print("Example 1:")
+    dfa1 = Automata(('a','b'), ((1,3),(2,1),(1,2),(4,3),(3,4)), 0, (1,3))
+    print("DFA \n"+str(dfa1))
+    M5(dfa1)
+    print("Minimized DFA \n"+str(dfa1))
 
-print("Example 2:")
-dfa2 = Automata(('a','b'), ((1,3),(2,4),(5,5),(4,2),(5,5),(5,5)), 0, (1,3,5))
-print("DFA \n"+str(dfa2))
-M5(dfa2)
-print("Minimized DFA \n"+str(dfa2))
+    print("Example 2:")
+    dfa2 = Automata(('a','b'), ((1,3),(2,4),(5,5),(4,2),(5,5),(5,5)), 0, (1,3,5))
+    print("DFA \n"+str(dfa2))
+    M5(dfa2)
+    print("Minimized DFA \n"+str(dfa2))
 
-print("Example 3:")
-dfa3 = Automata(('0','1'), ((1,1),(2,2),(3,3),(1,1)), 0, (1,2,3))
-print("DFA \n"+str(dfa3))
-#M5(dfa3)
-print("Minimized DFA \n"+str(dfa3))
+    print("Example 3:")
+    dfa3 = Automata(('0','1'), ((1,1),(2,2),(3,3),(1,1)), 0, (1,2,3))
+    print("DFA \n"+str(dfa3))
+    M5(dfa3)
+    print("Minimized DFA \n"+str(dfa3))
+
+    print("Example 4:")
+    dfa4 = Automata(   ('a','b','c'), ((1,3,5),(2,2,2),(7,7,7),(4,4,4),(7,7,7),(6,6,6),(7,7,7),(7,7,7)), 0, (0,7)    )
+    print("DFA \n"+str(dfa4))
+    M5(dfa4)
+    print("Minimized DFA \n"+str(dfa4))

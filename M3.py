@@ -122,40 +122,41 @@ class NFA:
 def M3(nFA: NFA):
     nFA.convert()
 
-#main
-print("Example 1:")
-t1 =[[[1], [1], []],
-    [[3], [], [2]],
-    [[], [2], [3]],
-    [[],[],[]]]
-nfa1 = NFA( initialState = 0,
-            finalStates = {3}, 
-            transitions = t1, 
-            alphabet = ['a','b','ë'] )
-print("Nfa with epsilon transitions \n"+str(nfa1))
-M3(nfa1)
-print("Nfa with no epsilon transitions \n"+str(nfa1))
+if __name__ == '__main__':
 
-print("Example 2:")
-t2 =[[[0], [], [1]],
-    [[], [], [2]],
-    [[3], [2], []],
-    [[],[],[]]]
-nfa2 = NFA( initialState = 0,
-            finalStates = {3}, 
-            transitions = t2, 
-            alphabet = ['a','b','ë'] )
-print("Nfa with epsilon transitions \n"+str(nfa2))
-M3(nfa2)
-print("Nfa with no epsilon transitions \n"+str(nfa2))
+    print("Example 1:")
+    t1 =[[[1], [1], []],
+        [[3], [], [2]],
+        [[], [2], [3]],
+        [[],[],[]]]
+    nfa1 = NFA( initialState = 0,
+                finalStates = {3}, 
+                transitions = t1, 
+                alphabet = ['a','b','ë'] )
+    print("Nfa with epsilon transitions \n"+str(nfa1))
+    M3(nfa1)
+    print("Nfa with no epsilon transitions \n"+str(nfa1))
 
-print("Example 3:")
-t3 =[[[0], [1]],
-     [[],[]]]
-nfa3 = NFA( initialState = 0,
-            finalStates = {1}, 
-            transitions = t3, 
-            alphabet = ['0','ë'] )
-print("Nfa with epsilon transitions \n"+str(nfa3))
-M3(nfa3)
-print("Nfa with no epsilon transitions \n"+str(nfa3))
+    print("Example 2:")
+    t2 =[[[0], [], [1]],
+        [[], [], [2]],
+        [[3], [2], []],
+        [[],[],[]]]
+    nfa2 = NFA( initialState = 0,
+                finalStates = {3}, 
+                transitions = t2, 
+                alphabet = ['a','b','ë'] )
+    print("Nfa with epsilon transitions \n"+str(nfa2))
+    M3(nfa2)
+    print("Nfa with no epsilon transitions \n"+str(nfa2))
+
+    print("Example 3:")
+    t3 =[[[0], [1]],
+         [[],[]]]
+    nfa3 = NFA( initialState = 0,
+                finalStates = {1}, 
+                transitions = t3, 
+                alphabet = ['0','ë'] )
+    print("Nfa with epsilon transitions \n"+str(nfa3))
+    M3(nfa3)
+    print("Nfa with no epsilon transitions \n"+str(nfa3))
