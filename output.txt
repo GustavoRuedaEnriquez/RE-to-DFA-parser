@@ -1,4 +1,3 @@
-abbbbbbaa
-abbbbbbaa
-a
-bbbbbb
+aaa
+acb
+aabaa

@@ -42,6 +42,7 @@ class Automata:
     def extended_delta(self, w):
         new_w = []
         for i in w:
+            if not i in self.alphabet: return False
             new_w.append(self.mapped_alphabet[i])
         s = self.__run_extended_delta(self.initial_state, new_w)
 
@@ -196,13 +197,9 @@ if __name__ == '__main__':
     print("Minimized DFA \n"+str(dfa2))
 
     print("Example 3:")
-    dfa3 = Automata(('0','1'), ((1,1),(2,2),(3,3),(1,1)), 0, (1,2,3))
+    dfa3 = Automata(   ('a','b','c'), ((1,3,5),(2,2,2),(7,7,7),(4,4,4),(7,7,7),(6,6,6),(7,7,7),(7,7,7)), 0, (0,7)    )
     print("DFA \n"+str(dfa3))
     M5(dfa3)
     print("Minimized DFA \n"+str(dfa3))
 
-    print("Example 4:")
-    dfa4 = Automata(   ('a','b','c'), ((1,3,5),(2,2,2),(7,7,7),(4,4,4),(7,7,7),(6,6,6),(7,7,7),(7,7,7)), 0, (0,7)    )
-    print("DFA \n"+str(dfa4))
-    M5(dfa4)
-    print("Minimized DFA \n"+str(dfa4))
+   
