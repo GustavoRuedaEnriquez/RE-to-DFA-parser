@@ -58,13 +58,6 @@ def reg_to_nfae(expression):
         currentIndex = queue.poll()
         currentTransition = afne[currentIndex[0]][currentIndex[1]]
         currentExpression = currentTransition.transitions[currentIndex[2]]
-        print("Current index:", currentIndex)
-        print("AFN:")
-        for i in afne:
-            for j in i:
-                sys.stdout.write(str(j) + ' ')
-
-        print()
 
         if currentExpression in alphabet:
             continue
@@ -81,9 +74,9 @@ def reg_to_nfae(expression):
             epsilonTransition = Transition(nodeTo, [EPSILON])
             starTransition = Transition(newNode, [newExpression])
 
-            afne.append([epsilonTransition, starTransition])
+            afne.append([starTransition, epsilonTransition])
 
-            queue.add((newNode, 1, 0))
+            queue.add((newNode, 0, 0))
 
         elif currentExpression[-1] == '$':
             #Case when is a concatenation
@@ -104,16 +97,18 @@ def reg_to_nfae(expression):
             #Case when is "or"
             operand1, operand2 = get_operands(currentExpression[:-1], alphabet)
             
-            print('1', operand1, '2', operand2)
+            del afne[currentIndex[0]][currentIndex[1]]
+            
+            newNode = len(afne)
+            indexOfNewTransition = len(afne[currentIndex[0]])
+            transition1 = Transition(currentTransition.nodeTo, [operand1])
+            transition2 = Transition(currentTransition.nodeTo, [operand2])
 
-            del currentTransition.transitions[currentIndex[2]]
-            newNode1 = len(currentTransition.transitions)
-            currentTransition.transitions.append(operand1)
-            newNode2 = len(currentTransition.transitions)
-            currentTransition.transitions.append(operand2)
+            afne[currentIndex[0]].append(transition1)
+            afne[currentIndex[0]].append(transition2)
 
-            queue.add((currentIndex[0], currentIndex[1], newNode1))
-            queue.add((currentIndex[0], currentIndex[1], newNode2))
+            queue.add((currentIndex[0], indexOfNewTransition, 0))
+            queue.add((currentIndex[0], indexOfNewTransition + 1, 0))
 
         elif currentExpression[-1] == '+':
             #Case when the operator is kleen star
@@ -143,6 +138,7 @@ def reg_to_nfae(expression):
             finalStates = {1},
             transitions = matrix, 
             alphabet = alphabet )
+
     return nfa
 
 #This function gets the operands of a binary operation
@@ -160,12 +156,15 @@ def get_operands(expression, alphabet):
     #Third case: Two complex expression
     else:
         for i in range(len(expression)-1, 0, -1):
+
             if expression[i] in alphabet:
+                if i == 1:
+                    return expression[0], expression[1:]
+
                 if expression[i-1] in alphabet:
                     return expression[:i-1], expression[i-1:]
                 
-                else:
-                    return expression[:i], expression[i:]
+                return expression[:i], expression[i:]
 
 def get_alphabet(expression):
     operands = [',', '+', '*', EPSILON, '$']
@@ -187,7 +186,7 @@ def transform_to_matrix(alphabet, afne):
 
     matrix = []
     for node in afne:
-        current_node = [[] for i in range(4)]
+        current_node = [[] for i in range(len(alphabet))]
         for transition in node:
             for letter in transition.transitions:
                 current_node[alphabet_mapped[letter]].append(transition.nodeTo)
@@ -201,7 +200,7 @@ def M2(regex: NFA):
 
 
 if __name__ == '__main__':
-
+    
     print("Example 1:")
     regex1 = "AB*,C$D,"
     print("Regular expression in postfix notation \n"+regex1)
@@ -219,14 +218,3 @@ if __name__ == '__main__':
     print("Regular expression in postfix notation \n"+regex3)
     output3 = M2(regex3)
     print("Nfa with epsilon transitions \n"+str(output3))
-
-
-
-
-
-
-
-
-
-
-
