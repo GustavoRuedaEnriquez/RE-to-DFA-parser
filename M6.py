@@ -81,6 +81,7 @@ def M6(automata: Automata, inputFile):
     output_file.close()
     f.close()            
 
+
 if __name__ == '__main__':
 
     print("Example 1:")
@@ -100,7 +101,4 @@ if __name__ == '__main__':
     print("DFA:\n"+str(dfa3))
     M6(dfa3, 'input.txt')
     print("See words that passed in output.txt")
-
-
-
-
+    

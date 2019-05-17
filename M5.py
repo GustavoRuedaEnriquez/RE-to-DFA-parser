@@ -39,6 +39,7 @@ class Automata:
         for i in range(len(alphabet)):
             self.mapped_alphabet[alphabet[i]] = i
 
+
     def extended_delta(self, w):
         new_w = []
         for i in w:
@@ -58,6 +59,7 @@ class Automata:
         current_state = self.delta[self.__run_extended_delta(s, w[:-1])][w[-1]]
         return current_state
    
+
     def __str__(self):
         alphabet = ""
         for alphas in self.mapped_alphabet:
@@ -74,13 +76,11 @@ class Automata:
         string = alphabet + "\n" + str(self.initial_state) + "\n" + finalStates + "\n" + transitions
         return string
 
+
     def reduce(self):
         # 1 ) creates Q x Q table
         noStates = len(self.delta)
         current = [[s2, s1] for s1 in range(noStates) for s2 in range(noStates)]
-
-        #print("initial Q x Q list" ,current)
-
 
         # 2 ) deletes tuples in which peF and q noteF or viceversa from the table
         t = 0
@@ -90,8 +90,6 @@ class Automata:
             if s1 in self.final_states and s2 not in self.final_states or s2 in self.final_states and s1 not in self.final_states:
                 del current[t]
             else: t+=1    
-        #print("list after step 2 ", current)
-        
 
         # 3 ) deletes tuples if theyre not in current table
         change = True
@@ -180,8 +178,10 @@ class Automata:
 
         self.delta = newDelta
 
+
 def M5(automata: Automata):
 	automata.reduce()
+
 
 if __name__ == '__main__':
     print("Example 1:")

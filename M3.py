@@ -34,25 +34,38 @@ class NFA:
         self.transitions  = transitions
         self.alphabet     = alphabet
         
+
     def setInitialState(self,state):
         self.initialState = state
+
+
     def getInitialState(self):
         return self.initialState
 
+
     def setFinalStates(self,state):
         self.finalStates = state
+
+
     def getFinalStates(self):
         return self.finalStates
 
+
     def setTransitions(self,transitions):
         self.transitions = transitions
+
+
     def getTransitions(self):
         return self.transitions
 
+
     def setAlphabet(self,alphabet):
         self.alphabet = alphabet
+
+
     def getAlphabet(self):
         return self.alphabet
+
 
     def __str__(self):
         alphabet = ""
@@ -70,6 +83,7 @@ class NFA:
         string = alphabet + "\n" + str(self.initialState) + "\n" + finalStates + "\n" + transitions
         return string
 
+
     def calcEpsilonClosure(self,listOfStates):
         epsilonClosure = listOfStates.copy()    #because the list initially contains all the states themselves
         recur = False
@@ -85,7 +99,6 @@ class NFA:
             return self.calcEpsilonClosure(epsilonClosure)  #recursive
 
 
-
     def calcD(self, listOfStates, symbol):
         d = []
         for state in range(len(listOfStates)):
@@ -93,6 +106,7 @@ class NFA:
                 stateToAdd = self.transitions   [listOfStates[state]]    [symbol]    [statesSetIdx]
                 if not stateToAdd in d: d.append(stateToAdd)
         return d
+
 
     def convert(self):
         #convert final states
@@ -121,6 +135,7 @@ class NFA:
 
 def M3(nFA: NFA):
     nFA.convert()
+
 
 if __name__ == '__main__':
 

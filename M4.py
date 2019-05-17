@@ -35,25 +35,38 @@ class DFA:
         self.transitions  = transitions
         self.alphabet     = alphabet
         
+
     def setInitialState(self,state):
         self.initialState = state
+
+
     def getInitialState(self):
         return self.initialState
 
+
     def setFinalStates(self,state):
         self.finalStates = state
+
+
     def getFinalStates(self):
         return self.finalStates
 
+
     def setTransitions(self,transitions):
         self.transitions = transitions
+
+
     def getTransitions(self):
         return self.transitions
 
+
     def setAlphabet(self,alphabet):
         self.alphabet = alphabet
+
+
     def getAlphabet(self):
         return self.alphabet
+
 
     def __str__(self):
         alphabet = ""
@@ -70,6 +83,7 @@ class DFA:
             transitions += ",\n"
         string = alphabet + "\n" + str(self.initialState) + "\n" + finalStates + "\n" + transitions
         return string
+
 
 def parseToDFA(nfa):
     dfaNewStates   = {}   
@@ -110,8 +124,10 @@ def parseToDFA(nfa):
     dfa = DFA(nfa.initialState,dfaFinalStates,dfaTransitions,nfa.alphabet)
     return dfa
 
+
 def M4(nfa: DFA):
     return parseToDFA(nfa)
+
 
 if __name__ == '__main__':
 

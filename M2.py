@@ -27,13 +27,16 @@ class Queue:
     def __init__(self):
         self.queue = []
 
+
     def poll(self):
         element = self.queue[0]
         del self.queue[0]
         return element
 
+
     def add(self, element):
         self.queue.append(element)
+
 
     def isNotEmpty(self):
         return len(self.queue) > 0
@@ -44,8 +47,10 @@ class Transition:
         self.nodeTo = nodeTo
         self.transitions = transitions
 
+
     def __str__(self):
         return '(' + str(self.nodeTo) + ', ' + str(self.transitions) + ')'
+
 
 #This function recives a reg exp and returns a NFA with epsilon transitions
 def reg_to_nfae(expression):
@@ -141,6 +146,7 @@ def reg_to_nfae(expression):
 
     return nfa
 
+
 #This function gets the operands of a binary operation
 def get_operands(expression, alphabet):
     assert len(expression) > 1
@@ -165,6 +171,7 @@ def get_operands(expression, alphabet):
                     return expression[:i-1], expression[i-1:]
                 
                 return expression[:i], expression[i:]
+
 
 def get_alphabet(expression):
     operands = [',', '+', '*', EPSILON, '$']
@@ -194,6 +201,7 @@ def transform_to_matrix(alphabet, afne):
         matrix.append(current_node)
 
     return matrix
+
 
 def M2(regex: NFA):
     return reg_to_nfae(regex)
