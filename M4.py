@@ -26,7 +26,9 @@
 #               .
 #       transition deltas n,
 
-class FDA:
+from M3 import NFA
+
+class DFA:
     def __init__(self,initialState,finalStates,transitions,alphabet):
         self.initialState = initialState
         self.finalStates  = finalStates
@@ -69,17 +71,17 @@ class FDA:
         string = alphabet + "\n" + str(self.initialState) + "\n" + finalStates + "\n" + transitions
         return string
 
-def parseToDFA(nfaInitialState,nfaFinalStates,nfaTransitions,nfaAlphabet):
+def parseToDFA(nfa):
     dfaNewStates   = {}   
     dfaTransitions = []
     dfaFinalStates = set()
-    alphabetSize   = len(nfaTransitions[0])
+    alphabetSize   = len(nfa.alphabet)
     newestState    = 0
 
-    dfaTransitions.append([None] * len(nfaTransitions[0]))
-    dfaNewStates[newestState] = set([nfaInitialState])
+    dfaTransitions.append([None] * len(nfa.transitions[0]))
+    dfaNewStates[newestState] = set([nfa.initialState])
 
-    if nfaInitialState in nfaFinalStates:
+    if nfa.initialState in nfa.finalStates:
         dfaFinalStates.add(newestState)
 
     currentStates = 0
@@ -90,7 +92,7 @@ def parseToDFA(nfaInitialState,nfaFinalStates,nfaTransitions,nfaAlphabet):
         for i in range(alphabetSize):
             tempState = set()
             for j in nfaSet:
-                tempTransition = nfaTransitions[j][i]
+                tempTransition = nfa.transitions[j][i]
                 if type(tempTransition) is int :
                     tempTransition = [tempTransition]
                 elif tempTransition == None:
@@ -99,15 +101,54 @@ def parseToDFA(nfaInitialState,nfaFinalStates,nfaTransitions,nfaAlphabet):
             if tempState not in dfaNewStates.values():
                 newestState += 1
                 dfaNewStates[newestState] = tempState
-                if (not nfaFinalStates.isdisjoint(tempState)):
+                if (not nfa.finalStates.isdisjoint(tempState)):
                     dfaFinalStates.add(newestState)
                 dfaTransitions.append([None]*alphabetSize)
             dfaTransitions[currentStates][i] = list(dfaNewStates.keys())[list(dfaNewStates.values()).index(tempState)]
         currentStates += 1
         currentSize = len(dfaTransitions)
-    fda = FDA(nfaInitialState,dfaFinalStates,dfaTransitions,nfaAlphabet)
-    return fda
+    dfa = DFA(nfa.initialState,dfaFinalStates,dfaTransitions,nfa.alphabet)
+    return dfa
 
-nfa = [[[0,2],1],[[1,2],2],[[0,2],None]]
-finalStates = set([0])
-print(parseToDFA(0,finalStates,nfa,['a','b']))
+def M4(nfa: DFA):
+    return parseToDFA(nfa)
+
+#main
+print("Example 1:")
+t1 =[[[0], [0,1]],
+    [[2], [2]],
+    [[3], [3]],
+    [[],[]]]
+nfa1 = NFA( initialState = 0,
+            finalStates = {3}, 
+            transitions = t1, 
+            alphabet = ['0','1'] )
+print("NFA\n"+str(nfa1))
+dfa1 = M4(nfa1)
+print("Equivalent DFA\n"+str(dfa1))
+
+print("Example 2:")
+t2 =[[[0], [0,1], []],
+    [[2], [2], []],
+    [[], [], [2]]]
+nfa2 = NFA( initialState = 0,
+            finalStates = {2}, 
+            transitions = t2, 
+            alphabet = ['0','1','2'] )
+print("NFA\n"+str(nfa2))
+dfa2 = M4(nfa2)
+print("Equivalent DFA\n"+str(dfa2))
+
+print("Example 3:")
+t3 =[[[0,1], [0], [0]],
+    [[], [], [2]],
+    [[], [3], []],
+    [[3], [3], [3]]]
+nfa3 = NFA( initialState = 0,
+            finalStates = {3}, 
+            transitions = t3, 
+            alphabet = ['a','b','c'] )
+print("NFA\n"+str(nfa3))
+dfa3 = M4(nfa3)
+print("Equivalent DFA\n"+str(dfa3))
+

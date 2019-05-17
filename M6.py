@@ -1,70 +1,55 @@
-from M5 import Automata
+# M3
+#
+# Authors:
+#   Carlo Alejandro Muñoz Amezquita
+#   Carolina Pérez-Vargas Pinson
+#   Gustavo Adolfo Rueda Enríquez
+#
+# Description:
+#   This module receives a input.tx file which contains the words to be tested and an DFA
+#   and creates and writes a output.txt file which contains the words that do pass.
+#
+#
+#   If you print a DFA object, the format will be like this:
+#       alphabet symbol 1;alphabet symbol 2;...;alphabet symbol n;
+#       initial state
+#       final state 1;final state 2;...;final state n;
+#       transition deltas 1,
+#       transition deltas 2,
+#               .
+#               .
+#               .
+#       transition deltas n,
+from Automata import Automata
 
-WILDCARD = '&'
-
-def get_next(original, current):
-    stillOperating = True
-    current = list(current)
-    next = ''
-
-    for i in range(len(current)):
-        if current[i] == WILDCARD and not original[i] == WILDCARD and stillOperating:
-            current[i] = original[i]
-
-        elif current[i] != WILDCARD and stillOperating:
-            current[i] = WILDCARD
-            stillOperating = False
-
-        next += current[i]
-
-    return next, not stillOperating
-
-
-def set_wildcards(w, alphabet):
-    w = list(w)
-    finalString = ''
-    for i in range(len(w)):
-        if not w[i] in alphabet:
-            w[i] = WILDCARD
-        
-        finalString += w[i]
-
-    return finalString
-
-
-def M6(automata: Automata):
-    output_file = open('output.txt', 'w')
-    f = open('input.txt', 'r')
-    
-    output = ""
+def check(automata,inputFile):
+    outputS = ""
+    output = open('output.txt', 'w')
+    f = open(inputFile, 'r')
     for line in f:
-        modified_line = set_wildcards(line, automata.alphabet)
-        next, haveNext = get_next(modified_line, modified_line)
-
-        while haveNext:
-            accepted = automata.extended_delta(next)
-            if accepted:
-                output += line + '\n'
-                break
-
-            next, haveNext = get_next(modified_line, next)
-        
-    output_file.write(output)
-    output_file.close()
+        if automata.extended_delta(line[:-1]):
+            outputS+=line
+    output.write(outputS)
+    output.close()
     f.close()
 
+def M6(automata, inputFile: Automata):
+    check(automata,inputFile)
 
-if __name__ == '__main__':
-    dfa = Automata(('a','b'), ((3,1),(2,1),(2,1),(3,4),(3,4)), 0, (1,3))
 
-    line = 'aabbccbbaa'
-    alphabet = ['a', 'b']
+#main
+dfa = Automata(  ('a','b'), ((1,0),(0,1),(0,0)), 2, (0)  )#no funciona y este deberia ser el ejemplo 1
 
-    new_line = set_wildcards(line, alphabet)
+print("Example 1:")
+dfa1 = Automata( ('a','b'), ((3,1),(2,1),(2,1),(3,4),(3,4)), 0, (1,3) )#funciona
+M6(dfa1, 'input.txt')
+print("See words that passed in output.txt")
 
-    next, haveNext = get_next(new_line, new_line)
-    print(next)
+print("\nExample 2:")
+dfa2 = Automata(('a','b'), ((1,1),(3,3),(0,0),(3,3)), 2, (0,3))#funciona
+print("DFA:\n"+str(dfa2))
+M6(dfa2, 'input.txt')
+print("See words that passed in output.txt")
 
-    while haveNext:
-        print(next)
-        next, haveNext = get_next(new_line, next)
+#falta ejemplo 3
+

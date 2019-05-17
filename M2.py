@@ -1,10 +1,28 @@
+# M2
+#
+# Authors:
+#   Carlo Alejandro Muñoz Amezquita
+#   Carolina Pérez-Vargas Pinson
+#   Gustavo Adolfo Rueda Enríquez
+#
+# Description:
+#   This module receives a regular expression in postfix notation and
+#   and returns an NFA with epsilon transitions
+#
+# Important Notes:
+#   We use reserved characters as the regular expression's operators:
+#       ',' -> Or
+#       '+' -> Kleene plus
+#       '*' -> Kleene Star
+#   Also, we use some special characters as some regular expression's operands:
+#       '&' -> Anything, wildcard
+#       'ë' -> Epsilon
 import sys
+from M3 import NFA
 
 EPSILON = 'ë'
 
-"""
-Simple FIFO structure
-"""
+#Simple FIFO structure
 class Queue:
     def __init__(self):
         self.queue = []
@@ -20,9 +38,7 @@ class Queue:
     def isNotEmpty(self):
         return len(self.queue) > 0
 
-"""
-Class created to represent a transition of the NFA-e
-"""
+#Class created to represent a transition of the NFA-e
 class Transition:
     def __init__(self, nodeTo, transitions):
         self.nodeTo = nodeTo
@@ -31,9 +47,7 @@ class Transition:
     def __str__(self):
         return '(' + str(self.nodeTo) + ', ' + str(self.transitions) + ')'
 
-"""
-This function recives a regular expression in postfix notation and returns a A
-"""
+#This function recives a reg exp and returns a NFA with epsilon transitions
 def reg_to_nfae(expression):
     afne = [[Transition(1, [expression])], []]
     queue = Queue()
@@ -115,11 +129,14 @@ def reg_to_nfae(expression):
 
             queue.add(currentIndex)
 
-    return transform_to_matrix(alphabet, afne)
+    matrix = transform_to_matrix(alphabet, afne)
+    nfa = NFA( initialState = 0,#????????????????
+            finalStates = {1}, #?????????????
+            transitions = matrix, 
+            alphabet = alphabet )
+    return nfa
 
-"""
-This function gets the operands of a binary operation
-"""
+#This function gets the operands of a binary operation
 def get_operands(expression, alphabet):
     assert len(expression) > 1
     #3 cases:
@@ -169,3 +186,37 @@ def transform_to_matrix(alphabet, afne):
         matrix.append(current_node)
 
     return matrix
+
+def M2(regex: NFA):
+    return reg_to_nfae(regex)
+
+
+#main
+print("Example 1:")
+regex1 = "AB*,C$D,"
+print("Regular expression in postfix notation \n"+regex1)
+output1 = M2(regex1)
+print("Nfa with epsilon transitions \n"+str(output1))
+
+print("\nExample 2:")
+regex2 = "abb$+$c$"
+print("Regular expression in postfix notation \n"+regex2)
+output2 = M2(regex2)
+print("Nfa with epsilon transitions \n"+str(output2))
+
+print("\nExample 3:")
+regex3 = "1a,*1b,$"
+print("Regular expression in postfix notation \n"+regex3)
+output3 = M2(regex3)
+print("Nfa with epsilon transitions \n"+str(output3))
+
+
+
+
+
+
+
+
+
+
+

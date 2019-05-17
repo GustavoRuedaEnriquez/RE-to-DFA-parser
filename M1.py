@@ -18,7 +18,7 @@
 #   symbol, the program inserts it automaticly with the "$" character.
 #
 #   Also, we use some special characters as some regular expression's operands:
-#       '&' -> Anything
+#       '&' -> Anything, wildcard
 #       'ë' -> Epsilon
 
 class Stack:
@@ -124,5 +124,25 @@ def infixToPostfix(expression):
         result += cpop
     return result
 
-regex = input('Input Regular Expression: ')
-print('Output Regular Expression: ' + infixToPostfix(regex)) 
+def M1(regex: str):
+    return infixToPostfix(regex)
+
+
+#main
+print("Example 1:")
+regex1 = "((A,B*)C,D)"
+print("Regular expression in infix notation \n"+regex1)
+output1 = M1(regex1)
+print("Regular expression in postfix notation \n"+output1)
+
+print("\nExample 2:")
+regex2 = "a(bb)+c"
+print("Regular expression in infix notation \n"+regex2)
+output2 = M1(regex2)
+print("Regular expression in postfix notation \n"+output2)
+
+print("\nExample 3:")
+regex3 = "(1,a)*(1,b)"
+print("Regular expression in infix notation \n"+regex3)
+output3 = M1(regex3)
+print("Regular expression in postfix notation \n"+output3)
