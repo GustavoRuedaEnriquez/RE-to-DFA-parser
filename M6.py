@@ -61,9 +61,12 @@ def M6(automata: Automata, inputFile):
     
     output = ""
     for line in f:
+        line = line[:-1] if line[-1] == '\n' else line
+
         if WILDCARD in automata.alphabet:
             modified_line = set_wildcards(line, automata.alphabet)
-            next, haveNext = get_next(modified_line, modified_line)
+            haveNext = True
+            next = modified_line
 
             while haveNext:
                 accepted = automata.extended_delta(next)
@@ -73,8 +76,7 @@ def M6(automata: Automata, inputFile):
 
                 next, haveNext = get_next(modified_line, next)
         else:
-            ex = line[:-1] if line[-1] == '\n' else line
-            if automata.extended_delta(ex):
+            if automata.extended_delta(line):
                 output+=line
 
     output_file.write(output)
@@ -101,4 +103,3 @@ if __name__ == '__main__':
     print("DFA:\n"+str(dfa3))
     M6(dfa3, 'input.txt')
     print("See words that passed in output.txt")
-    

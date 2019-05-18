@@ -25,21 +25,17 @@ class Stack:
     def __init__(self):
         self.items = []
     
-
     def isEmpty(self):
         return len(self.items) == 0
     
-
     def push(self, item):
         self.items.append(item)
     
-
     def pop(self):
         if self.items != []:
             return self.items.pop()
         else:
             return -1
-
 
     def peek(self):
         if self.items != []:
@@ -47,7 +43,6 @@ class Stack:
         else:
             return -1
     
-
 def isOperand(c):
     operands =  [chr(i) for i in range(ord('0'), ord('9') + 1)]
     operands += [chr(i) for i in range(ord('a'), ord('z') + 1)]
@@ -55,10 +50,8 @@ def isOperand(c):
     operands += ['á', 'é', 'í', 'ó', 'ú','ä','ö','ü','\n',' ','&','ë']
     return c in operands
 
-
 def isOperator(c):
     return c in ",$+*"
-
 
 def getPrecedence(c):
     switcher = {
@@ -70,10 +63,8 @@ def getPrecedence(c):
     }
     return switcher.get(c,-1)
 
-
 def insertBetween(str, char, i):
     return str[:i] + char + str[i:]
-
 
 def writeConcatSymbol(expression):
     length = len(expression)
@@ -99,7 +90,6 @@ def writeConcatSymbol(expression):
         i += 1
         length = len(expression)
     return expression
-
 
 def infixToPostfix(expression):
     result = ""
@@ -133,7 +123,6 @@ def infixToPostfix(expression):
         cpop = s.pop()
         result += cpop
     return result
-
 
 def M1(regex: str):
     return infixToPostfix(regex)

@@ -41,6 +41,10 @@ class Queue:
     def isNotEmpty(self):
         return len(self.queue) > 0
 
+
+    def __str__(self):
+        return str(self.queue)
+
 #Class created to represent a transition of the NFA-e
 class Transition:
     def __init__(self, nodeTo, transitions):
@@ -63,6 +67,19 @@ def reg_to_nfae(expression):
         currentIndex = queue.poll()
         currentTransition = afne[currentIndex[0]][currentIndex[1]]
         currentExpression = currentTransition.transitions[currentIndex[2]]
+
+        """
+        print("AFND:")
+        for i in afne:
+            for j in i:
+                sys.stdout.write(str(j) + ' ')
+            sys.stdout.write('\n')
+
+        print("Current index:", currentIndex)
+        print("Queue:")
+        print(str(queue))
+        sys.stdout.write('\n')
+        """
 
         if currentExpression in alphabet:
             continue
@@ -208,7 +225,6 @@ def M2(regex: NFA):
 
 
 if __name__ == '__main__':
-    
     print("Example 1:")
     regex1 = "AB*,C$D,"
     print("Regular expression in postfix notation \n"+regex1)

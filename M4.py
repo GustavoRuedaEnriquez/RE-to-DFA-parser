@@ -27,62 +27,7 @@
 #       transition deltas n,
 
 from M3 import NFA
-
-class DFA:
-    def __init__(self,initialState,finalStates,transitions,alphabet):
-        self.initialState = initialState
-        self.finalStates  = finalStates
-        self.transitions  = transitions
-        self.alphabet     = alphabet
-        
-
-    def setInitialState(self,state):
-        self.initialState = state
-
-
-    def getInitialState(self):
-        return self.initialState
-
-
-    def setFinalStates(self,state):
-        self.finalStates = state
-
-
-    def getFinalStates(self):
-        return self.finalStates
-
-
-    def setTransitions(self,transitions):
-        self.transitions = transitions
-
-
-    def getTransitions(self):
-        return self.transitions
-
-
-    def setAlphabet(self,alphabet):
-        self.alphabet = alphabet
-
-
-    def getAlphabet(self):
-        return self.alphabet
-
-
-    def __str__(self):
-        alphabet = ""
-        for alphas in self.alphabet:
-            alphabet += alphas
-            alphabet += ";"
-        finalStates = ""
-        for finals in self.finalStates:
-            finalStates += str(finals)
-            finalStates += ";"
-        transitions = ""
-        for trans in self.transitions:
-            transitions += str(trans)
-            transitions += ",\n"
-        string = alphabet + "\n" + str(self.initialState) + "\n" + finalStates + "\n" + transitions
-        return string
+from M5 import Automata as DFA
 
 
 def parseToDFA(nfa):
@@ -121,7 +66,8 @@ def parseToDFA(nfa):
             dfaTransitions[currentStates][i] = list(dfaNewStates.keys())[list(dfaNewStates.values()).index(tempState)]
         currentStates += 1
         currentSize = len(dfaTransitions)
-    dfa = DFA(nfa.initialState,dfaFinalStates,dfaTransitions,nfa.alphabet)
+    #dfa = DFA(nfa.initialState, dfaFinalStates, dfaTransitions, nfa.alphabet)
+    dfa = DFA(nfa.alphabet, dfaTransitions, nfa.initialState, dfaFinalStates)
     return dfa
 
 
@@ -143,6 +89,7 @@ if __name__ == '__main__':
     print("NFA\n"+str(nfa1))
     dfa1 = M4(nfa1)
     print("Equivalent DFA\n"+str(dfa1))
+
 
     print("Example 2:")
     t2 =[[[0], [0,1], []],
@@ -168,4 +115,3 @@ if __name__ == '__main__':
     print("NFA\n"+str(nfa3))
     dfa3 = M4(nfa3)
     print("Equivalent DFA\n"+str(dfa3))
-
