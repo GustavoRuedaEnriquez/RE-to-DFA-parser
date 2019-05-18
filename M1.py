@@ -18,7 +18,7 @@
 #   symbol, the program inserts it automaticly with the "$" character.
 #
 #   Also, we use some special characters as some regular expression's operands:
-#       '&' -> Wildcard
+#       '&' -> Anything, wildcard
 #       'ë' -> Epsilon
 
 import sys
@@ -55,7 +55,7 @@ def isOperand(c):
     operands =  [chr(i) for i in range(ord('0'), ord('9') + 1)]
     operands += [chr(i) for i in range(ord('a'), ord('z') + 1)]
     operands += [chr(i) for i in range(ord('A'), ord('Z') + 1)]
-    operands += ['á', 'é', 'í', 'ó', 'ú','ä','ö','ü','\n',' ','&','ë']
+    operands += ['á', 'é', 'í', 'ó', 'ú','ä','ö','ü','\n',' ','&','ë','.']
     return c in operands
 
 """
@@ -147,12 +147,25 @@ def infixToPostfix(expression):
         result += cpop
     return result
 
-if(len(sys.argv) is not 1):
-  with open(str(sys.argv[1]), "r") as fd:
-    for line in fd:
-        line = line.strip()
-        regex = line
-    print('Input Regular Expression: ' + regex)
-else:
-    regex = input('Input Regular Expression: ')
-print('Output Regular Expression: ' + infixToPostfix(regex)) 
+def M1(regex: str):
+    return infixToPostfix(regex)
+
+if __name__ == '__main__':
+
+    print("Example 1:")
+    regex1 = "((A,B*)C,D)"
+    print("Regular expression in infix notation \n"+regex1)
+    output1 = M1(regex1)
+    print("Regular expression in postfix notation \n"+output1)
+
+    print("\nExample 2:")
+    regex2 = "a(bb)+c"
+    print("Regular expression in infix notation \n"+regex2)
+    output2 = M1(regex2)
+    print("Regular expression in postfix notation \n"+output2)
+
+    print("\nExample 3:")
+    regex3 = "(1,a)*(1,b)"
+    print("Regular expression in infix notation \n"+regex3)
+    output3 = M1(regex3)
+    print("Regular expression in postfix notation \n"+output3)
