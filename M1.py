@@ -20,7 +20,6 @@
 #   Also, we use some special characters as some regular expression's operands:
 #       '&' -> Anything, wildcard
 #       'ë' -> Epsilon
-
 import sys
 
 """

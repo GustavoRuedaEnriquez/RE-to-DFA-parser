@@ -26,7 +26,6 @@
 #               .
 #               .
 #       transition deltas n,
-
 class NFA:
     def __init__(self,initialState,finalStates,transitions,alphabet):
         self.initialState = initialState

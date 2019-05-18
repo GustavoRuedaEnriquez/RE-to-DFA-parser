@@ -20,7 +20,6 @@
 #               .
 #               .
 #       transition deltas n,
-
 from M5 import Automata
 
 WILDCARD = '&'

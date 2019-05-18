@@ -25,7 +25,6 @@
 #               .
 #               .
 #       transition deltas n,
-
 from M3 import NFA
 from M5 import Automata as DFA
 
