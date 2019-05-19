@@ -71,19 +71,6 @@ def reg_to_nfae(expression):
         currentTransition = afne[currentIndex[0]][currentIndex[1]]
         currentExpression = currentTransition.transitions[currentIndex[2]]
         
-        """
-        print("AFND:")
-        for i in afne:
-            for j in i:
-                sys.stdout.write(str(j) + ' ')
-            sys.stdout.write('\n')
-
-        print("Current index:", currentIndex)
-        print("Queue:")
-        print(str(queue))
-        sys.stdout.write('\n')
-        """
-
         if currentExpression in alphabet:
             continue
 
