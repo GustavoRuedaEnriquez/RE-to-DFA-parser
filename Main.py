@@ -1,4 +1,5 @@
 import sys
+from M0 import M0
 from M1 import M1
 from M2 import M2
 from M3 import M3
@@ -19,8 +20,11 @@ if __name__ == '__main__':
     else:
         regex = input('Input Regular Expression: ')
     
+    #M0: Replace the wildcards
+    regex_without_wildcard = M0(regex)
+
     # M1: Convert from regular expression into a regular expression but in postfix
-    postfix = M1(regex)
+    postfix = M1(regex_without_wildcard)
 
     # M2: Convert the postfix regular expression into a non determinant automata with
     # epsilon transitions
