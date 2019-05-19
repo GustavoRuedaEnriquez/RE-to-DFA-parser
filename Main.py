@@ -10,7 +10,7 @@ from M6 import M6
 if __name__ == '__main__':
     
     # Obtain a regular expression
-    if(len(sys.argv) is not 1):
+    if len(sys.argv) != 1:
         with open(str(sys.argv[1]), "r") as fd:
             for line in fd:
                 line = line.strip()
