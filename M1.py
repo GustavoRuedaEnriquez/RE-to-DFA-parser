@@ -55,6 +55,7 @@ def isOperand(c):
     operands += [chr(i) for i in range(ord('a'), ord('z') + 1)]
     operands += [chr(i) for i in range(ord('A'), ord('Z') + 1)]
     operands += ['á', 'é', 'í', 'ó', 'ú','ä','ö','ü','\n',' ','&','ë','.']
+    operands += ['Á', 'É', 'Í', 'Ó', 'Ú']
     return c in operands
 
 """

@@ -21,66 +21,28 @@
 #               .
 #       transition deltas n,
 from M5 import Automata
-
-WILDCARD = '&'
-
-def get_next(original, current):
-    stillOperating = True
-    current = list(current)
-    next = ''
-
-    for i in range(len(current)):
-        if current[i] == WILDCARD and not original[i] == WILDCARD and stillOperating:
-            current[i] = original[i]
-
-        elif current[i] != WILDCARD and stillOperating:
-            current[i] = WILDCARD
-            stillOperating = False
-
-        next += current[i]
-
-    return next, not stillOperating
+import sys
 
 
-def set_wildcards(w, alphabet):
-    w = list(w)
-    finalString = ''
-    for i in range(len(w)):
-        if not w[i] in alphabet:
-            w[i] = WILDCARD
-        
-        finalString += w[i]
-
-    return finalString
-
-
-def M6(automata: Automata, inputFile):
-    output_file = open('output.txt', 'w')
+def M6(automata: Automata, inputFile='input.txt'):
     f = open(inputFile, 'r')
     
+    document = f.read()
+    f.close()
+
     output = ""
-    for line in f:
-        line = line[:-1] if line[-1] == '\n' else line
+    for substr_len in range(1, len(document)):
+        sys.stdout.write('\r' + "Current lenght of substring: %i of: %i" %(substr_len, len(document)))
+        for i in range(len(document) - substr_len):
+            current_str = document[i:i + substr_len]
 
-        if WILDCARD in automata.alphabet:
-            modified_line = set_wildcards(line, automata.alphabet)
-            haveNext = True
-            next = modified_line
-
-            while haveNext:
-                accepted = automata.extended_delta(next)
-                if accepted:
-                    output += line + '\n'
-                    break
-
-                next, haveNext = get_next(modified_line, next)
-        else:
-            if automata.extended_delta(line):
-                output+=line
-
+            if automata.extended_delta(current_str):
+                output += current_str + '\n'
+    print()
+    output_file = open('output.txt', 'w')
     output_file.write(output)
     output_file.close()
-    f.close()            
+                
 
 
 if __name__ == '__main__':

@@ -1,4 +1,5 @@
 import sys
+from datetime import datetime
 from M0 import M0
 from M1 import M1
 from M2 import M2
@@ -11,6 +12,7 @@ from M6 import M6
 if __name__ == '__main__':
     
     # Obtain a regular expression
+    t0 = datetime.now()
     if len(sys.argv) != 1:
         with open(str(sys.argv[1]), "r") as fd:
             for line in fd:
@@ -42,3 +44,6 @@ if __name__ == '__main__':
     
     # M6: Proccess the strings in input.txt
     M6(dfa, 'input.txt')
+
+    print("Finished. See words that passed in output.txt")
+    print("Elapsed time:", datetime.now() - t0)
