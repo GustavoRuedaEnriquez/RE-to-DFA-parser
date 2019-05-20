@@ -108,19 +108,14 @@ def reg_to_nfae(expression):
         elif currentExpression[-1] == ',':
             #Case when is "or"
             operand1, operand2 = get_operands(currentExpression[:-1])
-            
-            del afne[currentIndex[0]][currentIndex[1]]
-            
-            newNode = len(afne)
+            afne[currentIndex[0]][currentIndex[1]].transitions = [operand1]
+            queue.add(currentIndex)
+
             indexOfNewTransition = len(afne[currentIndex[0]])
-            transition1 = Transition(currentTransition.nodeTo, [operand1])
-            transition2 = Transition(currentTransition.nodeTo, [operand2])
-
-            afne[currentIndex[0]].append(transition1)
-            afne[currentIndex[0]].append(transition2)
-
+            transition = Transition(currentTransition.nodeTo, [operand2])
+            afne[currentIndex[0]].append(transition)
             queue.add((currentIndex[0], indexOfNewTransition, 0))
-            queue.add((currentIndex[0], indexOfNewTransition + 1, 0))
+            
 
         elif currentExpression[-1] == '+':
             #Case when the operator is kleen star
@@ -161,6 +156,7 @@ def get_operands(expression):
     elif expression[-1] in unary_operators:
         operand2 = get_operand(expression[:-1]) + expression[-1]
 
+    #print("Expresion", expression, "2", operand2)
     #Search for operator 2
     if expression[-1 - len(operand2)] in alphabet:
         operand1 = expression[-1 - len(operand2)]
@@ -223,7 +219,11 @@ def M2(regex: NFA):
 
 
 if __name__ == '__main__':
-
+    regex1 = "AB*,"
+    print("Regular expression in postfix notation \n"+regex1)
+    output1 = M2(regex1)
+    print("Nfa with epsilon transitions \n"+str(output1))
+"""
     print("Example 1:")
     regex1 = "AB*,C$D,"
     print("Regular expression in postfix notation \n"+regex1)
@@ -241,3 +241,4 @@ if __name__ == '__main__':
     output3 = M2(regex3)
     print("Nfa with epsilon transitions \n"+str(output3))
 
+"""
