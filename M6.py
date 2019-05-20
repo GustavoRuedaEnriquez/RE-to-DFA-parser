@@ -38,7 +38,7 @@ def M6(automata: Automata, inputFile='input.txt'):
 
             if automata.extended_delta(current_str):
                 output += current_str + '\n'
-    
+    print()
     output_file = open('output.txt', 'w')
     output_file.write(output)
     output_file.close()
